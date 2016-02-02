@@ -115,6 +115,7 @@ uMeas=1 #for measurements in Watt scale
 att=0 #built-in attenuator off
 
 powNew=[]
+pow0=[]
 
 comport = "COM5" #If using linux, this would be something like /dev/ttyUSB0 
 addr = 4 #Check the instrument rear panel and pg 52 of 1830-R_Manual_RevA for the address and baud rate settings
@@ -138,11 +139,12 @@ while True:
                 print '\n Power measurement in round ', i+1
                 j = 0
                 while j < nPowMsmnts:
-			powrd=str(readPM(timeDelPowMet)).rstrip()                  
-			pow.append(float(powrd))
+			powrd=str(readPM(timeDelPowMet)).rstrip()
+			#print powrd
+			pow0.append(float(powrd))
 			j = j + 1
 
-                powNew.append(np.mean(pow))#,dtype=np.float64				
+                powNew.append(np.mean(pow0))#,dtype=np.float64				
                 i = i + 1
 
         except serial.SerialException:
@@ -166,11 +168,9 @@ while True:
 					j=j+1
 
 				f1.close() #close the file
-
 				ser.close() #close the serial port
 				break
-                        print 'Resuming...'
-                    
+
                 except KeyboardInterrupt:
                         print 'Resuming...'
                         continue
